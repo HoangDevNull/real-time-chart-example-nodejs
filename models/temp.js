@@ -15,7 +15,7 @@ const temp = new Schema({
 
 // setter 
 temp.path('temp').set((input) => {
-    return input.trim();
+    return input.toString().trim();
 });
 
 module.exports = mongoose.model('Temp', temp);

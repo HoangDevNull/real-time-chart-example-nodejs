@@ -18,15 +18,19 @@
     </div>
 
     <script>
-
         // socket io 
         var socket = io("http://localhost:3000");
+        var dateCreate;
+        var temp = 0;
 
-        socket.on('hello-client', (data) => {
+        socket.on('data-chart', (data) => {
             console.log(data);
-        })
+        });
 
-
+        socket.on('change-data', (data) => {
+            dateCreate = data.date_created;
+            temp = data.temp;
+        });
 
         // Chart
         var chartColors = {
@@ -44,10 +48,12 @@
         }
 
         function onRefresh(chart) {
+            console.log(dateCreate + temp);
+
             chart.config.data.datasets.forEach(function (dataset) {
                 dataset.data.push({
-                    x: Date.now(),
-                    y: randomScalingFactor()
+                    x: dateCreate,
+                    y: temp
                 });
             });
         }
@@ -57,7 +63,7 @@
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Dataset 1 (linear interpolation)',
+                    label: 'Temp 1 (linear interpolation)',
                     backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
                     borderColor: chartColors.red,
                     fill: false,
@@ -65,7 +71,7 @@
                     borderDash: [8, 4],
                     data: []
                 }, {
-                    label: 'Dataset 2 (cubic interpolation)',
+                    label: 'Temp 2 (cubic interpolation)',
                     backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
                     borderColor: chartColors.blue,
                     fill: false,
@@ -76,15 +82,15 @@
             options: {
                 title: {
                     display: true,
-                    text: 'Line chart (hotizontal scroll) sample'
+                    text: 'Line chart - temperature (hotizontal scroll)'
                 },
                 scales: {
                     xAxes: [{
                         type: 'realtime',
                         realtime: {
-                            duration: 20000,
-                            refresh: 1000,
-                            delay: 2000,
+                            duration: 50000,
+                            refresh: 5000,
+                            delay: 5000,
                             onRefresh: onRefresh
                         }
                     }],
