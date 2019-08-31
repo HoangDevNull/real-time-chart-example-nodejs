@@ -11,15 +11,12 @@ router = require('./chart');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('dashboard', { title: 'Express' });
 });
-
 
 
 router.post('/insert_new_temp', (req, res, next) => {
   const temp = req.body.temp;
-
-
 });
 
 
@@ -37,6 +34,6 @@ var insertFunc = () => {
   });
 }
 
-setInterval(insertFunc, 4000);
+// setInterval(insertFunc, 4000);
 
 module.exports = router;
