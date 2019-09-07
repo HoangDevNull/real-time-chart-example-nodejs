@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- Load TensorFlow.js-->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <!-- Load the coco-ssd model. -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+
+</head>
+<style>
+        video,canvas {
+            position: absolute;
+            top: 0;
+            left: 25%;
+            right: auto;
+        }
+</style>
+<body>
+
+
+    <div>
+        <video id="video" width="720" height="600"></video>
+        <canvas id="canvas" width="720" height="600"></canvas>
+    </div>
+
+
+    <script src="javascripts/detect.js"></script>
+</body>
+
+
+
+</html>

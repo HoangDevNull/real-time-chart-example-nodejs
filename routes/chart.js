@@ -1,5 +1,4 @@
 const router = global.router;
-var io = require('../util/socketApi').io;
 var Temp = require('../models/temp');
 const socket = require('../util/socketApi');
 var io = socket.io;

@@ -1,23 +1,20 @@
 var express = require('express');
-
 global.router = express.Router();
 var router = global.router;
 
 const Temp = require('../models/temp');
 router = require('./chart');
-
-
-
+router = require('./temp');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('dashboard', { title: 'Express' });
 });
 
-
-router.post('/insert_new_temp', (req, res, next) => {
-  const temp = req.body.temp;
+router.get('/detect', (req, res, next) => {
+  res.render('objectdetect', { title: 'Object detect' });
 });
+
 
 
 var randomIntFromInterval = (min, max) => { // min and max included 
@@ -34,6 +31,7 @@ var insertFunc = () => {
   });
 }
 
-// setInterval(insertFunc, 4000);
+// setInterval(insertFunc, 3000);
+
 
 module.exports = router;
