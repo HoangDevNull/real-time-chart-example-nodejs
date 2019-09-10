@@ -3,12 +3,10 @@ var Temp = require('../models/temp');
 const socket = require('../util/socketApi');
 var io = socket.io;
 
-
-
+// changeSteam watching changed from database 
 const changeStream = Temp.watch();
 
 changeStream.on('change', (change) => {
-    console.log(change);
     // send back to client
     io.emit('change-data', change.fullDocument);
 });

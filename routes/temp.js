@@ -3,18 +3,22 @@ const router = global.router;
 // mqtt
 const client = require('../util/mqtt_temp');
 const Topic = 'tem2';
+const mqtt = require('mqtt');
 
 const socket = require('../util/socketApi');
 var io = socket.io;
 
 const Temp = require('../models/temp');
 
+router.get('/insert_temp', (req, res, next) => {
 
-client.on('connect', mqtt_connect);
-client.on('reconnect', mqtt_reconnect);
-client.on('error', mqtt_error);
-client.on('message', mqtt_messsageReceived);
-client.on('close', mqtt_close);
+    client.on('connect', mqtt_connect);
+    client.on('reconnect', mqtt_reconnect);
+    client.on('error', mqtt_error);
+    client.on('message', mqtt_messsageReceived);
+    client.on('close', mqtt_close);
+})
+
 
 function mqtt_connect() {
     console.log("Connecting MQTT");
