@@ -1,21 +1,43 @@
+
 navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia ||
     navigator.mozGetUserMedia || navigator.msGetUserMedia);
 const video = document.querySelector('#video');
+const socket = io('http://localhost:3000');
 
-let initWebcam = () => {
+
+
+let init = () => {
     if (navigator.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({
+        const webcamPromise = navigator.mediaDevices.getUserMedia({
             audio: false,
             video: {
                 facingMode: 'environment'
             },
             peerIdentity: null
-        }).then((stream) => {
-            video.srcObject = stream;
-            video.onloadedmetadata = () => {
-                video.play();
-            }
         })
+            .then((stream) => {
+                video.srcObject = stream;
+                return new Promise(resolve => {
+                    video.onloadedmetadata = () => {
+                        resolve();
+                    }
+                });
+            }, (err) => {
+                console.log('could not start webcam');
+                console.log(err);
+            });
+
+        const modelPromise = cocoSsd.load('lite_mobilenet_v2');
+
+        Promise.all([modelPromise, webcamPromise])
+            .then(values => {
+                console.log('init video finish');
+                video.play();
+                detectFrame(this.video, values[0]);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 }
 
@@ -28,11 +50,6 @@ let detectFrame = (video, model) => {
     });
 }
 
-let predictWithCoco = async () => {
-    const model = await cocoSsd.load('lite_mobilenet_v2');
-    detectFrame(this.video, model);
-    console.log('model loaded');
-}
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
 let renderPredictions = (predictions) => {
@@ -63,8 +80,10 @@ let renderPredictions = (predictions) => {
         ctx.fillStyle = "#000000";
         ctx.fillText(prediction.class, x, y);
         ctx.fillText(prediction.score.toFixed(2), x, y + height - textHeight);
+        if (prediction.class == "person" && Number(prediction.score.toFixed(2)) >= 0.8) {
+            console.log('person');
+        }
     });
 }
 
-initWebcam();
-predictWithCoco();
+init();

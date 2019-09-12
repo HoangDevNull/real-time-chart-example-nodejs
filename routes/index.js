@@ -22,7 +22,9 @@ router.get('/detect', (req, res, next) => {
 });
 /**predict page */
 router.get('/predict', (req, res, next) => {
-  let result = fuzzySystem.getPreciseOutput([30, 50])[0];
+  let result = fuzzySystem.getPreciseOutput([35, 90])[0];
+  console.log(result);
+  
   if (result < 50) {
     console.log("on");
   } else {
@@ -35,7 +37,7 @@ var randomIntFromInterval = (min, max) => { // min and max included
 }
 var insertFunc = () => {
   var newTemp = new Temp({
-    temp: randomIntFromInterval(30, 55),
+    temp: randomIntFromInterval(40, 90),
     date_created: Date.now()
   });
 
@@ -43,7 +45,6 @@ var insertFunc = () => {
     if (err) throw err
   });
 }
-
 // setInterval(insertFunc, 3000);
 
 module.exports = router;
